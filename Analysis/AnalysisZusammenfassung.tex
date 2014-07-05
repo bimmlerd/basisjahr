@@ -1,4 +1,4 @@
-\documentclass[a4paper, 9pt, DIV=24]{scrartcl}
+\documentclass[a4paper, 9pt, DIV=20]{scrartcl}
 \usepackage[utf8]{inputenc}
 
 \usepackage[ngerman]{babel}
@@ -43,7 +43,8 @@
 \clearpage
 
 \section{Einfaches}
-
+\subsection{Indirekter Beweis}
+Zum Beweis der Formel $A \to B$ genügt es, die Formel ${\lnot B \to \lnot A}$ zu zeigen, oder die Annahme $A \land \lnot B$ zum Widerspruch zu führen.
 \subsection{Vollständige Induktion}
 Kann für ein Prädikat $P(n)$ bewiesen werden, dass $P(n_0)$ und $\forall n\in\N: n > n_0 \wedge P(n) \rightarrow P(n+1)$ gilt,
 dann folgt daraus $\forall n\in\N: n \geq n_0 \rightarrow P(n)$.
@@ -110,6 +111,9 @@ Zwei Mengen $A, B$ heißen \emph{gleichmächtig}, wenn es eine bijektive Abbildu
 Wir schreiben $|A| = |B|$. \\
 Es gilt $|\N| = |\mathbb{Z}| = |\mathbb{Q}| < |\mathbb{R}| = |[a,b]| = |\mathbb{C}|$.
 
+\subsubsection{Schubfachprinzip}
+Wenn $n$ Objekte auf $m$ Mengen verteilt werden sollen, und es gilt $n>m$, so wird mindestens eine Menge doppelt belegt.
+
 \subsubsection{Topologie}
 Sei im Folgenden $\Omega, A \subseteq \R^d$.
 \paragraph{Definitionen}
@@ -144,7 +148,7 @@ Falls nicht anders angegeben, ist $(a_n)_{n\in\N}$ eine Folge.
 wenn 
 \[ \forall \varepsilon > 0 \: \exists n_0 \; \forall n \geq n_0: |a - a_n| < \varepsilon \]
 mit $ \varepsilon \in \R; n,n_0 \in\N  $. \\
-Wir schreiben dann $a = \lim_{n\to\infty} a_n$ oder auch $a_n \to a$.
+Wir schreiben dann $a = \lim_{n\to\infty} a_n$ oder auch $a_n \to a$. Der Grenzwert ist eindeutig bestimmt.
 \begin{description}
  \item[konvergent] Der Grenzwert existiert.
  \item[divergent] Der Grenzwert existiert nicht.
@@ -725,14 +729,15 @@ lässt sich $\rho$ vor das Integral ziehen.
 
 \clearpage
 \section{Formeln und Tafeln}
-Hier ist alles nur aufgelistet, für Begründungen an der jeweiligen Stelle nachgucken!
 \subsection{Rechentricks}
 \subsubsection{Fakultät, Binomialkoeffizienten}
 \[ n! = n\cdot(n-1)\cdot\dots\cdot1, n\in\N \]
 \[ \binom{n}{k} = \frac{n!}{k!(n-k!)} = \binom{n}{n-k},\ 0 \leq k \leq n \]
-
-\subsubsection{Mitternachtsformel}
+t
+\subsubsection{Mitternachtsformel, Binomischer Lehrsatz}
 \[ ax^2 + bx + c = 0 \iff x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \]
+Für beliebige Zahlen $a, b$ und $n \in \N$ ist
+\[ (a+b)^n = \sum^{n}_{k=0}{{n \choose k} a^{n-k}b^{k}}\]
 
 \subsubsection{Partialbruchzerlegung}
 \paragraph{Sonderfall Nenner Grad zwei}
