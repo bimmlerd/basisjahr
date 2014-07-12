@@ -15,6 +15,19 @@
 \title{Analysis II -- Zusammenfassung}
 \author{Tim Taubner, David Bimmler}
 
+% Shamelessly copied from http://tex.stackexchange.com/questions/43008/absolute-value-symbols
+\DeclarePairedDelimiter\abs{\lvert}{\rvert} % nice |x|
+\DeclarePairedDelimiter\norm{\lVert}{\rVert} % nice ||x||
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
 \DeclareMathOperator{\clos}{clos}
 \DeclareMathOperator{\Int}{int}
 \DeclareMathOperator{\arcsinh}{arcsinh}
@@ -227,9 +240,12 @@ $\sqrt{2\pi n}(\frac{n}{e})^n \approx n!$
 \subsubsection{Tipps an Beispielen}
 \paragraph{Gruppieren von Gliedern}
 
-\paragraph{Wurzel}
-
-\paragraph{Bruch}
+\paragraph{Wurzel und Bruch}
+$a_n=\sqrt{n(n+1)}-n$. Konvergent?
+\begin{align*}
+a_n &= \frac{\left(\sqrt{n(n+1)}-n\right)\left(\sqrt{n(n+1)}+n\right)}{\sqrt{n(n+1)}+n} \\
+    &= \frac{n}{\sqrt{n(n+1)}+n} = \frac{1}{\sqrt{1+\frac{1}{n}}+1} \to \frac{1}{2}
+\end{align*}
 
 \paragraph{$n$ im Exponent}
 
@@ -290,10 +306,14 @@ Wenn folgende 3 Kriterien erfüllt sind, konvergiert $\sum_{n=1}^\infty a_n$.
   q > 1 & \implies \sum_{n=1}^\infty a_n \text{ divergiert}
 \end{cases}
 \]
+Wurzel- und Quotientenkriterium sind Kriterien für absolute Konvergenz.
 
 \subsubsection{Potenzreihe}
-Die \emph{Potenzreihe} hat die allgemeine Form \[ \sum_{n=0}^\infty a_n (x - x_0)^n = \sum_{n=0}^\infty a_n z^n, \]
+Die \emph{Potenzreihe} hat die allgemeine Form \[ \sum_{k=0}^\infty a_k (x - x_0)^k = \sum_{k=0}^\infty a_k z^k, \]
 dabei nennt man $x_0$ den \emph{Entwicklungspunkt}.
+
+\paragraph{Konvergenzkriterium} in $\C$ \[ \abs{z} < \rho \defeq \frac{1}{\lim{\sup \sqrt[k]{\abs{c_{k}}}}}\]
+
 
 \paragraph{Wichtige Potenzreihen}
 
@@ -806,15 +826,21 @@ Jetzt lösen wir das folgende Gleichungssystem durch Ausmultiplikation.
 \end{enumerate}
 
 \subsubsection{Komplexe Zahlen $\mathbb{C}$}
-Sei $a,b \in \mathbb{R}, c \in \mathbb{C}$.
+Sei $a,b \in \mathbb{R}, z \in \mathbb{C}$.
 \begin{enumerate}[label={(}\arabic*{)}]
- \item $c := a + ib = \Re(a) + i\Im(b)$
- \item $\overline{c} = a - ib$ -- \emph{konjugiert-komplexe Zahl}
+ \item $z := a + ib = \Re(a) + i\Im(b)$
+ \item $\overline{z} = a - ib$ -- \emph{konjugiert-komplexe Zahl}
  \item $z_0 + z_1 := (a_0 + a_1) + i(b_0 + b_1)$
  \item $z_0 \cdot z_1 := (a_0a_1 - b_0b_1) + i(a_0b_1 + a_1b_0)$
  \item $|z|^2 = z\cdot\overline{z} = a^2 + b^2$
 \end{enumerate}
 
+\paragraph{Polarkoordinaten} sind eine alternative Repräsentation: \[ z = r * e^{i\varphi} = r * (\cos{\varphi}+i\sin{\varphi})\]
+wobei $r$ dem Betrag $\abs{z}$ entspricht und $\varphi=\arg{z}$ das Argument genannt wird.
+
+\paragraph{Umrechnung}
+\[ x = a = r \cos{\varphi} \quad y = b = r \sin{\varphi} \]
+\[ r = \sqrt{x^2+y^2} \text{ und dann Trigonometrie (komplexe Ebene)}\]
 
 \subsection{Trigonometrische Funktionen}
 \paragraph{Wichtige Werte}
