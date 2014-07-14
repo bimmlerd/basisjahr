@@ -312,6 +312,9 @@ Wenn folgende 3 Kriterien erfüllt sind, konvergiert $\sum_{n=1}^\infty a_n$.
 \]
 Wurzel- und Quotientenkriterium sind Kriterien für absolute Konvergenz.
 
+\paragraph{Integralkriterium}
+Sei $f: [1,\infty) \to \R_{+}$ monoton fallend. Dann konvergiert $\sum^{\infty}_{k=1}{f(k)}$ genau dann, wenn $\int^{\infty}_{1}{f(x)dx}$ existiert.
+
 \subsubsection{Potenzreihe}
 Die \emph{Potenzreihe} hat die allgemeine Form \[ \sum_{k=0}^\infty a_k (x - x_0)^k = \sum_{k=0}^\infty a_k z^k, \]
 dabei nennt man $x_0$ den \emph{Entwicklungspunkt}.
@@ -495,13 +498,13 @@ Es ist also:
 \section{Schweres}
 
 \subsection{Integration}
-Im Folgenden seien $F, f$ definiert auf $]a,b[$.
+Im Folgenden seien $F, f$ definiert auf $[a,b]$.
 \begin{enumerate}[label={(}\arabic*{)}]
  \item $F$ heisst Stammfunktion von $f$ falls $F' = f$.
  \item Für Stammfunktionen $F_1, F_2$ von f gilt: $F_1 - F_2$ konstant.
  \item $\int_{x_0}^{x_1}f(x)dx := F(x_1) - F(x_0)$ heisst Integral von $f$ über $[x_0, x_1]$.
-   Dabei ist $a < x_0 <= x_1 < b$ und $F' = f$.
- \item \textbf{Hauptsatz:} $F(y) = \int_{a}^{y}f(x)dx, y \in\ ]a,b[ \implies F' = f.$
+   Dabei ist $a \leq x_0 \leq x_1 \leq b$ und $F' = f$.
+ \item \textbf{Hauptsatz:} $F(x) \defeq \int_{x}^{b}f(x)dx, \  x \in [a,b] \implies F' = f.$
 \end{enumerate}
 
 \subsubsection{Rechenregeln}
@@ -544,7 +547,7 @@ Anschliessend integrieren wir auf beiden Seiten nach $dx$ und erhalten so Folgen
 \[ \iff \int\frac{1}{g(y)}dy = F(x) + C_0 \iff ln |g(y)| = F(x) + C_1. \]
 Durch Anwenden von $exp$ auf beiden Seiten und anschliessendes Umformen der Konstanten, erhalten wir schliesslich.
 \[ g(y) = C\cdot e^{F(x)} \iff y = g^{-1}(C\cdot e^{F(x)}) \]
-\emph{Bemerke,} dass es zusätzliche, konstante Lösungen für $y$ geben kann, nämlich für alle $y$ mit $g(y) = 0$.
+\emph{Bemerke:} Es kann zusätzliche, konstante Lösungen für $y$ geben, nämlich für alle $y$ mit $g(y) = 0$.
 
 \paragraph{Variation der Konstanten}
 Für $y' = y + x$ betrachte die Lösung der linearen, homogenen DGL $y' - y = 0$. Diese hat ungefähr die Form $y = C_1 e^{\lambda_1 x} + C_2 e^{\lambda_2 x}$.
@@ -564,6 +567,7 @@ Man berechne die Eigenwerte $\lambda_1, \dots, \lambda_l$ mit Vielfachheiten $c_
 Es gilt jetzt:
 \[ f(x) = \sum_{i=1}^{l}\sum_{j=1}^{c_l}k_{i,j}x^{j-1}e^{\lambda_l x} \]
 \[ = k_{1,0}e^{\lambda_1 x} + k_{1,1}xe^{\lambda_1 x} + \dots + k_{1,c_1-1}x^{c_1-1}e^{\lambda_l x} + \cdots \]
+
 \paragraph{Partikuläre Lösung für Anfangswertproblem}
 Haben wir auch $f(0) = w_0, f'(0) = w_1, \dots, f^{(n)}(0) = w_n$ gegeben,
 können wir die Koeffizienten $k_{i,j}$ wie folgt ausrechnen.
@@ -584,7 +588,19 @@ Durch Lösen des folgenden Gleichungssystems erhalten wir dann die entsprechende
  \end{pmatrix}
 \]
 
-\clearpage
+
+\subsubsection{Inhomogene DGL mit konstanten Koeffizienten}
+\paragraph{Ansatz vom Typ 'rechte Seite'} beschreibt die Idee, das die Störfunktion eine ähnliche Gestalt wie die spezielle Lösung hat. \textbf{Beispiel:}
+\[ y'' + y' -6y = 3e^{-4x}\]
+Die dazugehörige homogene DGL ist $y''+y'-6y=0$, das charakteristische Polynom $p(\lambda)=\lambda^2+\lambda-6=0$ mit $\lambda_{1,2}=2,-3$. Die allgemeine Lösung der homogenen DGL ist $y(x)=c_1e^{-3x}+c_2e^{2x}$. Der Ansatz:
+ \[y_s(x)=Ke^{-4x}\]
+Für die Ableitungen des Ansatzes haben wir 
+\begin{align*}
+y_s'(x)&=-4Ke^{-4x}\\
+y''_s(x)&=16Ke^{-4x}
+\end{align*}
+Eingesetzt in die homogene DGL ergibt sich \[y''+y'-6y=16Ke^{-4x}-4Ke^{-4x}-6Ke^{-4x}=6Ke^{-4x}=3e^{-4x}\]Also $6K=3\Rightarrow K=\frac{1}{2}$. Damit ist $y_s(x)=\frac{1}{2}e^{-4x}$ und die allgemeine Lösung der DGL \[y(x)=\frac{1}{2}e^{-4x}+c_1e^{-3x}+c_2e^{2x}\text{\hspace{5mm}}c_1,c_2\in\R\]
+
 \subsection{Differentialrechnung in $\mathbb{R}^n$}
 \subsubsection{Definitionen}
 Sei im Folgenden $\Omega \subseteq \R^n, F: \Omega \mapsto \R^m$ und $f: \Omega \mapsto \R$. \\
@@ -980,7 +996,7 @@ Im Folgenden sei $f(x) \rightarrow g(x)$ Abkürzung für $\frac{d}{dx} f(x) = g(
  \item $\int f(ax+b)dx = \frac{1}{a}F(x+b)$
  \item $\int \frac{f'(x)}{f(x)}dx = \ln(|f(x)|)$
  \item $\int f'(x)f(x)dx = \frac{1}{2}f(x)^2$
- \item $\int |f(x)|dx = |\int f(x)dx|$
+ \item $\int |f(x)|dx \geq |\int f(x)dx|$
 \end{enumerate}
 \subsubsection{Polynome und Wurzeln}
 \begin{enumerate}[label={(}\arabic*{)}]
