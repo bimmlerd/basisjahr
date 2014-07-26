@@ -602,17 +602,25 @@ y''_s(x)&=16Ke^{-4x}
 Eingesetzt in die homogene DGL ergibt sich \[y''+y'-6y=16Ke^{-4x}-4Ke^{-4x}-6Ke^{-4x}=6Ke^{-4x}=3e^{-4x}\]Also $6K=3\Rightarrow K=\frac{1}{2}$. Damit ist $y_s(x)=\frac{1}{2}e^{-4x}$ und die allgemeine Lösung der DGL \[y(x)=\frac{1}{2}e^{-4x}+c_1e^{-3x}+c_2e^{2x}\text{\hspace{5mm}}c_1,c_2\in\R\]
 
 \subsection{Differentialrechnung in $\mathbb{R}^n$}
-\subsubsection{Definitionen}
-Sei im Folgenden $\Omega \subseteq \R^n, F: \Omega \mapsto \R^m$ und $f: \Omega \mapsto \R$. \\
-Betrachte $f$ als $f(x_1,x_2\dots,x_n)$, dann heisst $f$ \emph{partiell differenzierbar} in Richtung $(0,\dots,e_i,\dots,0)$ bzw. nach $x_i$,
-wenn die Funktion $g: x \mapsto f(x_1,\dots,x_{i-1},x,x_{i+1},\dots,x_n)$ differenzierbar ist. Wir betrachten dabei $x_0,\dots,x_{i-1},x_{i+1},\dots,x_n$ als Konstanten.
 
+\subsubsection{Definitionen}
+
+\paragraph{Partielle Ableitung}
+Betrachte $f$ als $f(x_1,x_2\dots,x_n)$, dann heisst $f$ \emph{partiell differenzierbar} in Richtung $(0,\dots,e_i,\dots,0)$ bzw. nach $x_i$,
+wenn die Funktion $g: x \mapsto f(x_1,\dots,x_{i-1},x,x_{i+1},\dots,x_n)$ differenzierbar ist. Wir betrachten dabei $x_0,\dots,x_{i-1},x_{i+1},\dots,x_n$ als Konstanten.\\
+Sei im Folgenden $\Omega \subseteq \R^n, F: \Omega \mapsto \R^m$ und $f: \Omega \mapsto \R$.
 \begin{enumerate}[label={(}\arabic*{)}]
  \item $F$ wie oben heisst \emph{Vektorfunktion}.
  \item Bei $m = 1$ sprechen wir von einem \emph{Skalarfeld}.
  \item Bei $n = m$ sprechen wir von einem \emph{Vektorfeld}.
  \item Es gilt $\dfrac{\partial^2 f}{\partial x\partial y} = \dfrac{\partial^2 f}{\partial y\partial x}$. -- \emph{Satz von Schwarz}
 \end{enumerate}
+
+\subsubsection{Differenzierbarkeit}
+\paragraph{Test für Diff'barkeit}
+
+$f$ differenzierbar in $x_0 \implies \frac{\partial f}{\partial x^1}(x_0)$ existiert und das Differential $\mathrm{d}_{x_0}f = \left(\frac{\partial f}{\partial x^1}(x_0), \dots, \frac{\partial f}{\partial x^n}(x_0) \right)$ \\
+$f$ ist total differenzierbar, wenn die partiellen Ableitungen stetig sind. ($f\in C' \implies f$ differenzierbar).
 
 \subsubsection{$\nabla$-Operator, Gradient, Divergenz, Rotation}
 \begin{description}
@@ -946,6 +954,11 @@ Sei mal $\sum_{n_0}$ Abkürzung für $\sum_{n=n_0}^\infty$.
 
 \subsection{Ableitungen}
 Im Folgenden sei $f(x) \rightarrow g(x)$ Abkürzung für $\frac{d}{dx} f(x) = g(x)$.
+\subsubsection{Definitionen}
+\begin{enumerate}[label={(}\arabic*{)}]
+\item $\lim_{\substack{x \to {x_0} \\ x\not  = {x_0}}}{\frac{{f\left( x \right) - f\left( {{x_0}} \right)}}{{x - {x_0}}}}$
+\item $\frac{{\partial f}}{{\partial {x^i}}}({x_0}) \defeq  \lim_{\substack{h \to 0 \\ h\not = 0}}{\frac{{f({x_0} + h{e_i}) - f({x_0})}}{h}}$
+\end{enumerate}
 \subsubsection{Rechenregeln}
 \begin{enumerate}[label={(}\arabic*{)}]
  \item $(f(x)+g(x))' = f'(x) + g'(x)$
