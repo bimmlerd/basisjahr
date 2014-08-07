@@ -9,6 +9,7 @@
 \usepackage{mathtools}
 \usepackage{pdfpages}
 \usepackage{graphicx}
+\usepackage{hyperref}
 
 \usepackage{fancyhdr}
 
@@ -50,30 +51,22 @@
 
 
 \includepdf[pages={-}]{Karatsuba.pdf}
-\section{TODO}
-\begin{itemize}
-\item REKURSIONSGLEICHUNGEN
-\item Fluss Algorithmen (9.7) (dinic etc)
-\item 2-dimensionaler Range-Tree (8.3/8.5)
-\item Branch and Bound
-\end{itemize}
+
 \section{Algorithmen}
 
 \subsection{$\Oh$-Notation}
 Hier immer $f:\N\to\R^{+}$!
 \begin{description}
-\item[Obere Schranke] $ \mathcal O(g) \defeq \{f|\exists c\in\R^{+}, n_{0} \in\;\N \forall n \geq n_{0}:f(n) \leq cg(n)\} $
-\item[Untere Schranke] $ \Omega(g) \defeq \{f|\exists c\in\R^{+}, n_{0} \in \N\;\forall n \geq n_{0}:f(n) \geq cg(n)\} $
-\item[Asymptotisch gleich] $ \Theta(g) \defeq \{f|\exists c\in\R^{+}, n_{0} \in \N\;\forall n \geq n_{0}:  c^{-1}g(n) \leq f(n) \leq cg(n)\} $
+\item[Obere Schranke] $ \mathcal O(g) \defeq \{f\,|\,\exists c\in\R^{+}, n_{0} \in\N\;\forall n \geq n_{0}:f(n) \leq cg(n)\} $
+\item[Untere Schranke] $ \Omega(g) \defeq \{f\,|\,\exists c\in\R^{+}, n_{0} \in \N\;\forall n \geq n_{0}:f(n) \geq cg(n)\} $
+\item[Asymptotisch gleich] $ \Theta(g) \defeq \{f\,|\,\exists c\in\R^{+}, n_{0} \in \N\;\forall n \geq n_{0}:  c^{-1}g(n) \leq f(n) \leq cg(n)\} $
 \end{description}
 \paragraph{Wachstumsordnung}
 \[ 1 << \log\log n << \frac{\log n}{\log\log n} << \log n << \log^{2} n << \sqrt{n}\]
 \[ n << n \log n << n^{1+\varepsilon} << n^{2} << n^{3} << c^{n} << n! << n^{n}\]
 
 \subsection{Amortisierte Analyse}
-Die tatsächlichen Kosten der $i$-ten Operation heissen $t_{i}$. 
-\subsubsection{Potentialfunktion}
-Die Potentialfunktion $\Phi_{i}$ beschreibt das Potential nach der $i$-ten Operation. Demnach sind die amortisierten Kosten der $i$-ten Operation definiert als $a_{i}=t_{i}+\Phi_{i}-\Phi_{i-1}$. Damit folgt für $m$ Operationen: \[ \sum_{i=1}^{m}{a_{i}} = \sum_{i=1}^{m}{(t_{i}+\Phi_{i}-\Phi_{i-1})} = \Bigg( \sum_{i=1}^{m}{t_{i}}\Bigg) + \Phi_{m} - \Phi_{0}\]
+Die tatsächlichen Kosten der $i$-ten Operation heissen $t_{i}$. Die Potentialfunktion $\Phi_{i}$ beschreibt das Potential nach der $i$-ten Operation. Demnach sind die amortisierten Kosten der $i$-ten Operation definiert als $a_{i}=t_{i}+\Phi_{i}-\Phi_{i-1}$. Damit folgt für $m$ Operationen: \[ \sum_{i=1}^{m}{a_{i}} = \sum_{i=1}^{m}{(t_{i}+\Phi_{i}-\Phi_{i-1})} = \Bigg( \sum_{i=1}^{m}{t_{i}}\Bigg) + \Phi_{m} - \Phi_{0}\]
 Und dann \[ \sum_{i=1}^{m}{t_{i}} = \sum_{i=1}^{m}{a_{i}} - \Phi_{m} + \Phi_{0} \]
 Wenn es also gelingt, die amortisierten Kosten und den Term $\Phi_{0} - \Phi_{m}$ abzuschätzen, hat man auch eine Abschätzung für die tatsächlichen Kosten. Wenn man dann noch $\Phi_{0} \leq \Phi_{m}$ hat, sind die amortisierten Kosten eine obere Schranke für die tatsächlichen Kosten.
 
@@ -86,44 +79,42 @@ Wenn es also gelingt, die amortisierten Kosten und den Term $\Phi_{0} - \Phi_{m}
 \end{enumerate}
 
 \subsection{Sortieren}
-\paragraph{Selectionsort} funktioniert via Auswählen der Position des minimalen Schlüssels $j_{1}$ und nachfolgigem Vertauschen von $a[1]$ mit $a[j_{1}]$. Dann wird $j_{2}$ bestimmt, und $a[j_{2}]$ mit $a[2]$ vertauscht, etc. Nicht stabil. In-place.\\
+\paragraph{Selectionsort} funktioniert via Auswählen der Position des minimalen Schlüssels $j_{1}$ und nachfolgigem Vertauschen von $a[1]$ mit $a[j_{1}]$. Dann wird $j_{2}$ bestimmt, und $a[j_{2}]$ mit $a[2]$ vertauscht, etc. Kann stabil implementiert werden. In-place.\\
 $\Th(n^{2})$ Vergleiche, $\Th(n)$ Vertauschungen.
 
 \paragraph{Insertionsort} Die zu sortierenden Elemente werden nacheinander betrachtet und in die jeweils bereits sortierte, anfangs leere Teilfolge an der richtigen Stelle eingefügt. Wenn also $a[1]$ bis $a[i-1]$ schon sortiert sind, wird $a[i]$ nach links verschoben, bis es am richtigen Platz ist. Stabil. In-place.\\
 $\Oh(n^{2})$ Vergleiche und Vertauschungen
 
-\paragraph{Shellsort} Wie Insertionsort, aber versucht das die Verschiebungsschritte zu vergrössern, indem eine Folge abnehmender Inkremente (z.B. $5,3,1$) verwendet wird. Eine Teilfolge kann dann $5$-sortiert sein. Nicht stabil. In-place. \\
-Bounds natürlich abhängig von Folge von Inkrementen.
+\paragraph{Shellsort} Wie Insertionsort, aber versucht das die Verschiebungsschritte zu vergrössern, indem eine Folge abnehmender Inkremente (z.B. $5,3,1$) verwendet wird. Eine Teilfolge kann dann $5$-sortiert sein. Nicht stabil. In-place. Bounds sind abhän-gig von der Inkrementenfolge.
 
 \paragraph{Bubblesort} Verwendet als Bewegung \emph{nur} das Vertauschen benachbarter Datensätze. Läuft durch, und nimmt immer das grössere Element von zwei benachbarten mit. Stabil. In-place. \\
 $\Oh(n^{2})$ Vertauschungen und Vergleiche.
 
-\paragraph{Quicksort} Sortieren durch rekursives Teilen. Ein Pivotelement $k$ wird gewählt, dass die Elemente in zwei Teile teilt, alle Elemente kleiner bzw. grösser $k$. Die Elemente werden korrekt um $k$ angeordnet (durch Vertauschen), so dass das Problem jetzt nur noch aus dem Sortieren der zwei Teilfolgen besteht. Nicht stabil. In-place (abgesehen vom Rekursionsstack). \\
-$\Oh(n\log{n})$ Zeit.
+\paragraph{Quicksort} Sortieren durch rekursives Teilen. Ein Pivotelement $k$ wird gewählt, mithilfe dessen die Elemente in zwei Teile geteilt werden. Die Elemente werden so um $k$ angeordnet (durch Vertauschen), dass das Problem jetzt nur noch aus dem Sortieren der zwei Teilfolgen besteht. Nicht stabil. In-place (abgesehen vom Rekursionsstack). $\Oh(n\log{n})$ Zeit.
 
 \paragraph{Heapsort} Heap herstellen. Das kleinste (erste) Element ist das nächste in der Ordnung. Entferne es, und stelle die Heapbedingung für die restlichen Schlüssel wieder her. Nicht stabil. In-place. \\
-$\Oh(n\log{n})$ Zeit.
+$\Th(n\log{n})$ Zeit.
 
-\paragraph{Mergesort} Die Gesamtfolge wird in zwei Teilfolgen geteilt, die rekursiv mit Mergesort sortiert werden. Danach werden die beiden Teilfolgen wieder zu einer Folge verschmolzen, indem man zwei Zeiger auf die ersten Elemente setzt, das kleinere der beiden nimmt und den Zeiger vorrückt. Natürlicher Mergesort versucht schon existierende bitonische Läufe auszunutzen. Stabil. Nicht in-place. \\
-$\Oh(n\log{n})$ Zeit.
+\paragraph{Mergesort} Die Gesamtfolge wird in zwei Teilfolgen geteilt, die rekursiv mit Mergesort sortiert werden. Danach werden die beiden Teilfolgen wieder zu einer Folge verschmolzen, indem man zwei Zeiger auf die ersten Elemente setzt, das kleinere der beiden nimmt und den Zeiger vorrückt. Natürlicher Mergesort versucht, schon existierende \hyperref[bitonische_laufe]{bitonische Läufe} auszunutzen. Stabil. Nicht in-place. \\
+$\Th(n\log{n})$ Zeit.
 
-\subsubsection{Radixsort}
+\subsubsection{Radixsorts}
 Radixsorts nutzen Eigenschaften neben Vergleichbarkeit der Schlüssel aus. Schlüssel sind Wörter über einem aus $m$ Elementen bestehenden Alphabet, also bei z.B. $m=10$ Dezimalzahlen, $m=2$ Binärzahlen.
 
-\paragraph{Radix-exchange-sort} startet beim MSB, teilt die Folge in zwei und ruft sich rekursiv auf den beiden Teilfolgen auf. Dort wird dann aufgrund des nächsten Bits geteilt, etc. Geteilt wird wie bei Quicksort, zwei Zeiger laufen ÃŒber die Schlüssel und vertauschen wenn nötig. Stabil. In-place. \\
-$\Oh(N * b)$. Gut, wenn Anzahl Bits $b = \log{N}$. Nicht gut bei wenigen langen Schlüsseln.
+\paragraph{Radix-exchange-sort} startet beim MSB, teilt die Folge in zwei und ruft sich rekursiv auf den beiden Teilfolgen auf. Dort wird dann aufgrund des nächsten Bits geteilt, etc. Geteilt wird wie bei Quicksort, zwei Zeiger laufen über die Schlüssel und vertauschen wenn nötig. Stabil. In-place. \\
+$\Oh(n * b)$. Gut, wenn Anzahl Bits $b = \log{n}$. Nicht gut bei wenigen, langen Schlüsseln.
 
-\paragraph{Bucketsort} Verteilungsphase: Schlüssel werden basierend auf der ls Ziffer auf Buckets verteilt (also $14, 24, 64, 44$ in einen Bucket). Sammelphase: Die Schlüssel werden eingesammelt, nach Bucket sortiert, innerhalb der Buckets das ``unterste'' zuerst. Es folgt eine Verteilphase basierend auf der nächsten Ziffer, und ebenso eine Sammelphase. Während der zweiten Verteilphase bleibt die Ordnung der ersten erhalten, die kleinsten ls Ziffern sind ``unten''. Stabil. Nicht in-place. \\
+\paragraph{Bucketsort} Verteilungsphase: Schlüssel werden basierend auf der least-significant Ziffer auf Buckets verteilt (also $14, 24, 64, 44$ in einen Bucket). Sammelphase: Die Schlüssel werden eingesammelt, nach Bucket sortiert, innerhalb der Buckets das ``unterste'' zuerst. Es folgt eine Verteilphase basierend auf der nächsten Ziffer, und ebenso eine Sammelphase. Während der zweiten Verteilphase bleibt die Ordnung der ersten erhalten, die kleinsten least-significant Ziffern sind ``unten''. Stabil. Nicht in-place. \\
 $\Oh(n+k)$ Laufzeit, mit $k$ Anzahl Buckets. Mit $k$ konstant $\Oh(n)$.
 
 \subsection{Suchen}
 \paragraph{Median der Mediane} ist ein Vorgehen, mit dem ein günstiges Pivot-Element gefunden werden kann. Man teilt die $N$ Elemente in $\floor{\frac{N}{5}}$ Gruppen auf, sortiert in diesen Gruppen in konstanter Zeit und wendet dieses Verfahren rekursiv auf die Mediane der 5er Gruppen an. Man erhält den Median der Mediane, welcher man als Pivot verwenden kann.
 
-\paragraph{Auswahl} Mit dem Median der Mediane als gutes Pivot-Element kann das $i$-te Element einer Folge in $\Oh(N)$ gefunden werden.
+\paragraph{Auswahl} Mit dem Median der Mediane als gutes Pivot-Element kann das $i$-te Element einer Folge in $\Oh(n)$ gefunden werden.
 
 \paragraph{Binäre Suche} erfolgt nach dem Divide-and-conquer Prinzip. Sucht auf einer geordneten Folge von Schlüsseln indem es den gesuchten Schlüssel mit dem mittigen Element der Folge vergleicht und somit die Hälfte der Schlüssel ausschliessen kann.
 
-\paragraph{Fibonacci Suche} kommt ohne Divisionen auf, man teilt den Suchbereich (bequemerweise $F_{n}-1$) in zwei $F$s auf: $F_{n-2}-1$ und $F_{n-1}-1$ (zwei Bereiche und ein Einzelelement). $\Oh{\log{n}}$ also wie Binär.
+\paragraph{Fibonacci Suche} kommt ohne Divisionen auf, man teilt den Suchbereich (bequemerweise $F_{n}-1$) in zwei $F$s auf: $F_{n-2}-1$ und $F_{n-1}-1$ (zwei Bereiche und ein Einzelelement). $\Oh{(\log{n})}$ also wie Binär.
 
 \paragraph{Exponentielle Suche} ist nützlich, wenn $N$ sehr gross ist. Es wird zuerst mit exponentiellen Schritten ein Bereich festgelegt, in dem sich das gesuchte Element befindet, und dieser Bereich wird dann z.B. mit BS durchsucht.
 
@@ -147,23 +138,53 @@ $\Oh(n+k)$ Laufzeit, mit $k$ Anzahl Buckets. Mit $k$ konstant $\Oh(n)$.
 \item[Lineares Hashing] mit schrittweiser Hinzunahme von Behältern wenn der Belegungsfaktor grösser wird. Funktioniert mit maximal zwei Hashfunktionen, $h_{L}=h_{1}$ und $h_{L+1}=h_{2}$. Es gilt $h_{L+1}(k) = \begin{cases}
 h_{L}(k) \text{ oder}\\ h_{L}(k)+m_{0}*2^{L} \end{cases}$ \\ Beispiel: $h_{L}(k)=k\mod{(m_{0}*2^{L})}$ Beim Linearen Hashing wird immer nur um einen Behälter vergrössert.
 \item[Virtuelles Hashing] verdoppelt hingegen in jedem Expansionsschritt seine Kapazität, vermeidet also Überlaufblöcke. Dafür sind mehr Hashfunktionen nötig, die gespeichert werden müssen. 
-\item[Erweiterbares Hashing] Not a clue wie das funktioniert.
 \end{description}
 
-\subsubsection{Selbstanordnende Listen}
-Sind nützlich bei grossen Unterschieden in der Zugriffshäufigkeit auf Elemente, dann lohnt es sich nämlich, die häufiger genutzten möglichst weit vorne zu platzieren.
-\begin{description}
-\item[Move-to-front] bedeutet, dass ein gebrauchtes Element an den Anfang verschoben wird. Die restliche Ordnung verändert sich nicht. Asymptotisch optimal.
-\item[Transpose] heisst schlicht dass ein abgerufenes Element einen Platz nach vorne rutscht.
-\end{description}
+\subsection{Graphen}\label{graphalgos}
+\subsubsection{Traversierung}
+\paragraph{Breadth-First-Search (BFS) -- Breitensuche} Zuerst werden alle Knoten die $k$ entfernt sind vom Ausgangsknoten besucht, dann $k+1$ etc. Laufzeit: $\Oh(|V| + |E|)$
 
-\paragraph{Frequency Count} ordnet jedem Element einen Zähler zu, und ordne nach jedem Zugriff die Liste nach dem Zähler.
+\paragraph{Depth-First-Search (DFS) -- Tiefensuche} So weit wie möglich in die Tiefe, dann so wenig wie möglich \emph{backtracken} und wieder runter. Laufzeit: $\Oh(|V| + |E|)$
+
+
+\subsubsection{Spanning Trees - Spannende Bäume}
+Ein Spannender Baum eines Graphen $G$ ist ein Teilgraph $G'$ mit den gleichen Knoten aber nur einer Teilmenge der Kanten.
+
+\paragraph{Kruskal} Starte mit einem leeren Graph. Nehme die billigste Kante hinzu, die keinen Zyklus kreiert, bis du einen MST hast. Laufzeit: $\Oh(|E| \log{|E|})$
+
+\paragraph{Prim} Starte mit einem leeren Graph $V'$ und einem beliebigen Knoten $v$. Wähle die billigste Kante, die $v$ mit einem Knoten der noch nicht in $V'$ ist verbindet, bis du einen MST hast. Laufzeit: $\Oh(|E| + |V| \log{|V|})$
+
+\subsubsection{Kürzeste Wege}
+
+\paragraph{Dijkstra} Fast identisch zu Prim. Wir haben $V'$ mit schon abgearbeiteten Knoten (zu diesen wissen wir die kürzeste Distanz), wir beginnen mit $v$. Wir gehen die Nachbarn durch, speichern die kürzere Distanz, entweder die von $v$ oder die, die bis jetzt die kürzeste war. Sobald alle Nachbarn besucht wurden, kommt $v$ in $V'$ und hat seine definitive kürzeste Distanz. \emph{Keine negativen Gewichte erlaubt!} (sonst rennt er im Kreis und heult) \\
+Je nach Priority-Queue-Implementation: $\Oh(|E|+|V|\log{|V|})$ oder gar $\Oh(|V|^2)$
+
+\paragraph{Bellman-Ford} Erster Knoten hat Kosten 0, alle anderen $\infty$. Wir gehen alle Kanten durch, und prüfen ob wir einem Knoten tiefere Kosten (Kosten Anfangsknoten + Kosten Kante) zuweisen können. Nach einer Iteration haben wir also die kürzesten Wege mit einer Kante, nach 2 mit 2 Kanten etc. Bellman-Ford ist Algorithmus genug, um auch negative Kantengewichte zu überstehen, kann sogar negative Zyklen erkennen. \\ Laufzeit: $\Oh(|V|*|E|)$
+
+
+\subsection{Flüsse}\label{flowalgos}
+\subsubsection{Ford-Fulkerson}
+Algorithmus zur Optimierung des Flusses. \\
+Laufzeit: $\Oh(|E| * \max{f})$
+\begin{enumerate}
+\item Wähle irgendein Fluss von $q$ nach $s$.
+
+\includegraphics[width=4.5cm]{GraphZuResidual}
+\item Bilde das Residualnetzwerk. ``Subtrahiere'' also die Kapazitäten die durch den ersten Fluss benutzt werden.
+\includegraphics[width=5cm]{ResidualGraph}
+\item Wähle einen Fluss im Residualnetzwerk, und wiederhole Schritte 2 und 3 bis kein weiterer Fluss existiert.
+\end{enumerate}
+
+\subsubsection{Edmonds und Karp}
+Laufzeit: $\Oh(|V|*|E|^2)$
+\subsubsection{Dinic}
+Laufzeit: $\Oh(|V|^2*|E|)$
 
 \subsection{Geometrische Algorithmen}
 \subsubsection{Konvexe Hülle}
 Die konvexe Hülle einer Menge von Punkten in der Ebene ist jenes Polynom, welches man erhält, wenn man eine Schnur straff um die Punkte spannt. D.h. wenn eine Gerade zwischen zwei Punkten alle anderen Punkte auf einer Seite hat, ist sie Teil der konvexen Hülle.
 
-\paragraph{Jarvis' Marsch} ist die intuitive Technik, man startet an dem Punkt mit der kleinsten $x$-Koordinate, und 'lässt die Schnur nach unten baumeln', und rotiert sie dann gegen den Uhrzeigersinn, bis man auf einen nächsten Punkt trifft. $\Oh(Nh)$, mit $h$ Anzahl Punkte auf der Hülle. Effizient, wenn die Hülle aus wenigen Punkten besteht, aber potentiell $\Oh(N^{2})$, z.B. bei einem Kreis.
+\paragraph{Jarvis' Marsch} ist die intuitive Technik, man startet an dem Punkt mit der kleinsten $x$-Koordinate, und `lässt die Schnur nach unten baumeln', und rotiert sie dann gegen den Uhrzeigersinn, bis man auf einen nächsten Punkt trifft. $\Oh(Nh)$, mit $h$ Anzahl Punkte auf der Hülle. Effizient, wenn die Hülle aus wenigen Punkten besteht, aber potentiell $\Oh(N^{2})$, z.B. bei einem Kreis.
 
 \begin{center}
 \includegraphics[width=6cm]{JarvisMarch}
@@ -176,6 +197,7 @@ Wähle einen Punkt und errechne die $n-1$ Linien aus allen anderen Punkten. Sort
 \includegraphics[width=2.8cm]{GrahamScan2}
 \includegraphics[width=2.8cm]{GrahamScan3}
 \end{center}
+
 \subsubsection{Scan-line-Prinzip}
 Eine Beschreibung eines Scanline-Algorithmus muss immer folgende Punkte beinhalten:
 \begin{enumerate}
@@ -185,19 +207,27 @@ Eine Beschreibung eines Scanline-Algorithmus muss immer folgende Punkte beinhalt
 \item \emph{Auslesen der Lösung.} Wie lässt sich die Lösung auslesen?
 \end{enumerate}
 
-
 \section{Datenstrukturen}
-
 \subsection{Listen}
+
+\subsubsection{Selbstanordnende Listen}
+Sind nützlich bei grossen Unterschieden in der Zugriffshäufigkeit auf Elemente, dann lohnt es sich nämlich, die häufiger genutzten möglichst weit vorne zu platzieren.
+\begin{description}
+\item[Move-to-front] bedeutet, dass ein gebrauchtes Element an den Anfang verschoben wird. Die restliche Ordnung verändert sich nicht. Asymptotisch optimal.
+\item[Transpose] heisst schlicht dass ein abgerufenes Element einen Platz nach vorne rutscht.
+\end{description}
+
+\paragraph{Frequency Count} ordnet jedem Element einen Zähler zu, und ordne nach jedem Zugriff die Liste nach dem Zähler.
 
 \subsubsection{Skip-Listen}
 \paragraph{Randomisierte Skip-Listen}
 Eine randomisierte Datenstruktur, bestehend aus verschiedenen Ebenen. Die unterste Ebene ist eine normale verkettete Liste. Die höheren Ebenen kann man sich als Überholspur vorstellen. Ein Element wird in der untersten Ebene eingefügt, und dann mit gewissen Wahrscheinlichkeiten $p$ in die Ebenen darüber eingefügt.
+
 \paragraph{Perfekte Skip-Liste}
-Die perfekte Skip-Liste hat ebenfalls eine verkettete Liste als Niveau 0. Dazu kommt aber, dass jedes $2^{i}$-te Element eine Zeiger das Element $2^{i}$ Positionen weiter hat, für $i=0,\dots,\floor{\log{N}}$. Es hat also im Niveau 1 die Elemente $2,4,6,\dots$, im Niveau 2 $4, 8, 12$ etc.
+Die perfekte Skip-Liste hat ebenfalls eine verkettete Liste als Niveau 0. Dazu kommt aber, dass jedes $2^{i}$-te Element eine Zeiger das Element $2^{i}$ Positionen weiter hat, für $i=0,\dots,\floor{\log{N}}$. Es hat also im Niveau 1 die Elemente $2,4,6,\dots$, im Niveau 2 die Elemente $4, 8, 12$ etc.
 
 
-\subsection{Heaps - ``Halden''}
+\subsection{Heaps - ``Halden'' :D}
 \begin{description}
 \item[Max-Heapbedingung] besagt $k_{i}\leq k_{\floor{\frac{i}{2}}}$ für $2 \leq i \leq N$.
 \item[Min-Heapbedingung] besagt $k_{i}\geq k_{\floor{\frac{i}{2}}}$ für $2 \leq i \leq N$.
@@ -206,7 +236,7 @@ Jeder Schlüssel ist kleiner (grösser) als der Vaterschlüssel. \\
 Bei einem Min-(Max-)Heap kann das Minimum (Maximum) in einem Schritt bestimmt werden.
 
 \subsubsection{Binomial-Heap}
-Der Binomial-Heap besteht aus Listen von Binomial-Bäumen verschiedener Ordnung. 
+Der Binomial-Heap, eine Priority-Queue, besteht aus Listen von Binomial-Bäumen verschiedener Ordnung. 
 \paragraph{Der Binomial-Baum} ist rekursiv definiert:
 \begin{itemize}
 \item Ein Binomial-Baum der Ordnung 0 besteht aus einem einzenen Knoten.
@@ -232,7 +262,7 @@ Ein Binomial-Heap unterstützt die folgenden Operationen.
 \end{description}
 Alle diese Operationen können in einer \emph{Worst-Case-Zeit} von $\Oh(\log{n})$ implementiert werden. 
 
-\subsubsection{Fibonacci-Heap} Der Fibonacci-Heap ist vom Binomial-Heap abgeleitet, also auch eine Priority-Queue. Ein F-Heap ist eine Kollektion heapgeordneter Bäueme mit disjunkten Schlüsselmengen. Alle Operationen ausser $deleteMin$ ($\Oh(\log{n})$) lassen sich in amortisiert $\Oh(1)$ implementieren. 
+\subsubsection{Fibonacci-Heap} Der Fibonacci-Heap ist vom Binomial-Heap abgeleitet, also auch eine Priority-Queue. Ein F-Heap ist eine Kollektion heap-geordneter Bäume mit disjunkten Schlüsselmengen. Alle Operationen ausser $extractMin$ ($\Oh(\log{n})$) lassen sich in amortisiert $\Oh(1)$ implementieren. 
 
 \begin{center}
 \includegraphics[width=\linewidth]{FibonacciHeap}
@@ -245,7 +275,7 @@ Jeder Knoten hat einen Pointer auf sein linkes Geschwister, sein Elternteil, ein
 \begin{description}
 \item[makeHeap()] Gibt einen Pointer auf den Null-Knoten zurück.
 \item[findMin($h$)] Es gibt einen Pointer auf das minimale Element von $h$, also ist $findMin$ trivial.
-\item[deleteMin($h$)] Die schwierigste Operation. Wir beginnen indem wir das minimale Element $x$ von $h$ entfernen, die Liste der Kinder von $x$ und die der Wurzeln ausser $x$ verketten und wiederholen dann den folgenden Schritt bis er nicht mehr anwendbar ist:
+\item[extractMin($h$)] Die schwierigste Operation. Wir beginnen indem wir das minimale Element $x$ von $h$ entfernen, die Liste der Kinder von $x$ und die der Wurzeln ausser $x$ verketten und wiederholen dann den folgenden Schritt bis er nicht mehr anwendbar ist:
 \begin{itemize}[leftmargin=*]
 \item
 \emph{Linking Step}. Finde zwei Bäume deren Wurzel denselben Rang hat, und verschmelze sie. (Der neue Baum hat jetzt einen höheren Rang als die Ränge der verschmolzenen).
@@ -269,31 +299,45 @@ Bäume sind verallgemeinerte Listen, in denen jedes Element (Knoten) eine begren
 \item[Inorder] Linker Teilbaum, Wurzel, Rechter Teilbaum
 \end{description}
 
-\subsubsection{Binärsuchbäume}
-
-\paragraph{Vanilla Binärsuchbaum} mit einer Wurzel, und grösseren rechten Nachfolgern, kleineren linken Nachfolgern.
+\subsubsection{Vanilla Binärsuchbaum} mit einer Wurzel, und grösseren rechten Nachfolgern, kleineren linken Nachfolgern.
 \begin{description}
 \item[Suchen] Rekursiv in Teilbäumen $T$. Abbruch wenn $T$ keine Wurzel ist. Wenn $x <$ Wurzel von $T$ suche in linkem Teilbaum, sonst im rechten.
 \item[Einfügen] Suchen nach Knoten, einfügen als Blatt des Knoten in dem die Suche endete.
 \item[Löschen] Wenn Blatt, löschen. Wenn einen Sohn, löschen und Sohn hochziehen. Wenn zwei Söhne, symmetrischer Nachfolger suchen und zu löschender Knoten ersetzen.
 \end{description}
-\paragraph{AVL-Bäume} sind balancierte binäre Suchbäume. In jedem Teilbaum ist der Höhenunterschied höchstens 1.
+
+\subsubsection{AVL-Bäume} sind balancierte binäre Suchbäume. In jedem Knoten muss gelten: Der Höhenunterschied zwischen dem rechten Teilbaum und dem linken Teilbaum ist höchstens 1.
 \begin{description}
 \item[Suchen] Genau wie bei einem normalen binären Suchbaum.
-\item[Einfügen] Wie beim Suchbaum, aber dann Balanceinformationen erneuern. Falls Unbalanciert: Einfach- oder Doppelrotation bis wieder balanciert, dann weiter BI erneuern.
+\item[Einfügen] Wie bei einem normalen Binärsuchbaum, aber dann Balanceinformationen erneuern. Falls Höhenunterschied zu gross: Einfach- oder Doppelrotation bis wieder balanciert, dann weiter Balanceinformationen erneuern.
 \item[Löschen] Wie beim BSB, aber danach wieder balancieren.
 \end{description}
+\paragraph{Rotationen}
+\begin{enumerate}
+\item Den unbalacierten Knoten rot färben.
+\item Dessen schweres Kind grün färben.
+\item Fallunterscheidung:
+\begin{enumerate}
+\item Die Kinder des grünen Knoten sind gleich schwer: \emph{Einfachrotation}
+\item Sonst das schwere Kind des grünen Knoten blau färben:
+\begin{itemize}
+\item Falls rot $<$ grün $<$ blau oder rot $>$ grün $>$ blau: \emph{Einfachrotation}
+\item Sonst: \emph{Doppelrotation}
+\end{itemize}
+\end{enumerate}
+\end{enumerate}
 
-\paragraph{Huffman-Baum} wird erstellt durch die Huffman-Kodierung, ein Kompressionsverfahren. Die Mächtigkeit des Alphabets über dem kodiert wird heisst $m$. Man kreiert einen Wald, der aus den verwendeten Zeichen und ihren Häufigkeiten besteht. Dann nimmt man die geringsten $m$ Häufigkeiten und addiert sie, und verschmilzt sie zu einem Baum (der Ordnung $m$) mit der Summe als Wurzel. Dann nimmt man wieder die zwei kleinsten Häufigkeiten, was (beim Binäralphabet) die Summe und ein neues Element oder zwei neue Elemente sein kann.
 
-\paragraph{Optimale Suchbäume} versuchen die (erwarteten) Suchkosten zu minimieren.
+%\paragraph{Huffman-Baum} wird erstellt durch die Huffman-Kodierung, ein Kompressionsverfahren. Die Mächtigkeit des Alphabets über dem kodiert wird heisst $m$. Man kreiert einen Wald, der aus den verwendeten Zeichen und ihren Häufigkeiten besteht. Dann nimmt man die geringsten $m$ Häufigkeiten und addiert sie, und verschmilzt sie zu einem Baum (der Ordnung $m$) mit der Summe als Wurzel. Dann nimmt man wieder die zwei kleinsten Häufigkeiten, was (beim Binäralphabet) die Summe und ein neues Element oder zwei neue Elemente sein kann.
+
+\subsubsection{Optimale Suchbäume} versuchen die (erwarteten) Suchkosten zu minimieren.
 \begin{description}
 \item[Die Menge $S=k_{1}, \dots, k_{n}$] von $n$ verschiedenen Schlüssel,
 \item[Die Häufigkeit $a_{i}$] mit der nach $k_{i}$ gesucht wird,
 \item[Das offene Interval $(k_{0}, k_{n+1})$] von Schlüsseln, nach denen gesucht werden kann (Oft gilt $k_{0}=-\infty$ und $k_{n+1}=\infty$),
 \item[Die Häufigkeit $b_{j}$] mit der nach einem Schlüssel $x\in (k_{j}, k_{j+1})$ gesucht wird.
 \item[Das Gewicht $W$] des Suchbaums die summierte Häufigkeit seiner Knoten: $W=\sum_{i}{a_{i}}+\sum_{j}{b_j}$
-\item[Die gewichtete Pfadlänge $P$] misst wie viele Schlüsslvergleiche total nötig sind: \[P= \sum^{n}_{i=1}{(depth[k_{i}]+1})*a_{i}+\sum^{n}_{j=0}{depth(leaf(k_{j}, k_{j+1}))*b_{j}}\]
+\item[Die gewichtete Pfadlänge $P$] misst wie viele Schlüsslvergleiche total nötig sind: \[P= \sum^{n}_{i=1}{(\text{depth}[k_{i}]+1})*a_{i}+\sum^{n}_{j=0}{\text{depth}(\text{leaf}(k_{j}, k_{j+1}))*b_{j}}\]
 \end{description} 
 \begin{center}
 \includegraphics[width=6cm]{OptimalerSuchbaum}
@@ -339,9 +383,9 @@ Eine Überlappungsanfrage ist äquivalent zu einer Aufspiessanfrage und einer Be
 Konstruiert von einem vollständigen Binärbaum, der alle elementaren Segmente als Blätter hat. See Pic :]
 
 \begin{description}
-\item[delete] braucht Wörterbuch mit den Intervallen. Dann $\Oh(\log{N})$.
-\item[insert]ist in $\Oh(\log{N})$ Schritten ausführbar.
-\item[Aufspiessanfragen]brauchen $\Oh(\log{N}+k)$ mit $k$ als Grösse der Antwort.	
+\item[delete] braucht Wörterbuch mit den Intervallen. Dann $\Oh(\log{n})$.
+\item[insert]ist in $\Oh(\log{n})$ Schritten ausführbar.
+\item[Aufspiessanfragen]brauchen $\Oh(\log{n}+k)$ mit $k$ als Grösse der Antwort. Eine Aufspiessanfrage nach $x$ wird realisiert indem der Segment-Baum als Suchbaum für $x$ benutzt wird, d.h. wir suchen das Elementarsegment welches $x$ beinhaltet. Dann geben wir als Antwort alle Listen von Intervallen an, die wir in den Knoten auf dem Weg angetroffen haben.
 \end{description}
 
 \begin{center}
@@ -349,8 +393,6 @@ Konstruiert von einem vollständigen Binärbaum, der alle elementaren Segmente a
 
 Ein Segment Baum
 \end{center}
-
-\paragraph{Aufspiessanfrage} nach $x$ wird realisiert indem der Segment-Baum als Suchbaum für $x$ benutzt wird, d.h. wir suchen das Elementarsegment welches $x$ beinhaltet. Dann geben wir als Antwort alle Listen von Intervallen an, die wir in den Knoten auf dem Weg angetroffen haben.
 
 \subsubsection{Intervall-Bäume}
 In einem Intervall-Baum hat jeder Knoten zwei verkettete Listen von Intervallen, die $u$- und die $o$-Liste. Die $u$-Liste ist eine nach aufsteigenden unteren Endpunkten sortiert, die $o$-Liste nach absteigenden oberen Endpunkten. Ein Intervall $[l, r]$ kommt in beiden Listen  desjenigen Knotens im Skelett des Intervall-Baumes mit minimaler Tiefe vor, dessen Schlüssel im Intervall $[l,r]$ liegt. \\
@@ -361,9 +403,9 @@ Für die Menge der Intervalle $\{[1,2],[1,5],[3,4],[5,7],[6,7],[1,7]\}$ haben wi
 \end{center}
 
 \begin{description}
-\item[delete] ist in $\Oh(\log{N})$ Schritten ausführbar.
-\item[insert] ist in $\Oh(\log{N})$ Schritten ausführbar.
-\item[Aufspiessanfragen] brauchen $\Oh(\log{N}+k)$ mit $k$ als Grösse der Antwort.	
+\item[delete] ist in $\Oh(\log{n})$ Schritten ausführbar.
+\item[insert] ist in $\Oh(\log{n})$ Schritten ausführbar.
+\item[Aufspiessanfragen] brauchen $\Oh(\log{n}+k)$ mit $k$ als Grösse der Antwort.	
 \end{description}
 
 \subsubsection{Prioritäts-Suchbäume}
@@ -376,7 +418,7 @@ sind 1.5-dimensional, und speichern 2-dimensionale Daten. Jeder Punkt $(x,y)$ (a
 \begin{description}
 \item[insert] wird am Anfang immer in die Wurzel gehen, dann dem Suchbaum folgen.
 \item[delete] sucht zuerst nach dem zu löschenden Punkt, und dann der Sohn mit dem kleineren $y$-Wert hochgezogen (um die Heap-Bedingung nicht zu verletzen).
-\item[Bereichsanfrage] in $\Oh(\log{N}+k)$ Schritten.
+\item[Bereichsanfrage] in $\Oh(\log{n}+k)$ Schritten.
 \end{description}
 
 Es gibt auch eine Möglichkeit, den Prioritäts-Suchbaum voll dynamisch zu realisieren, siehe S.524 in Widmayer.
@@ -401,48 +443,31 @@ Ein Graph besteht aus einer Knotenmenge $V$ (vertices) und einer Menge $E \subse
 
 \subsection{Repräsentationen eines Graphen}
 \begin{description}
-\item[Adjazenzlisten] sind Listen für jeden Knoten, in dem die Nachbarn gespeichert werden. Für viele Fälle die bessere Wahl, abgesehen vom Löschen ($\Oh(d)$) und Testen ob eine Kante im Graph ist ($\Oh(d)$), $d=$ Anzahl Nachbarn.
+\item[Adjazenzlisten] sind Listen für jeden Knoten, in dem die Nachbarn gespeichert werden. Für viele Fälle die bessere Wahl, abgesehen vom Löschen ($\Oh(d)$) und Testen ob eine Kante im Graph ist (auch $\Oh(d)$), wobei $d=$ Anzahl Nachbarn.
 \item[Adjazenzmatrizen] sind $|V|\times|V|$ Matrizen, welche im Eintrag $(i,j)$ eine Eins speichern, falls es eine Kante von Knoten $i$ zu Knoten $j$ gibt. 
 \end{description}
 
-\subsection{Traversierung}
-\paragraph{Breadth-First-Search (BFS) -- Breitensuche} Zuerst werden alle Knoten die $k$ entfernt sind vom Ausgangsknoten besucht, dann $k+1$ etc.
-
-\paragraph{Depth-First-Search (DFS) -- Tiefensuche} So weit wie möglich in die Tiefe, dann so wenig wie möglich \emph{backtracken} und wieder runter.
-
-
-\subsection{Spanning Trees - Spannende Bäume}
-Ein Spannender Baum eines Graphen $G$ ist ein Teilgraph $G'$ mit den gleichen Knoten aber nur einer Teilmenge der Kanten.
-
-\paragraph{Kruskarl} Starte mit einem leeren Graph. Nehme die billigste Kante hinzu, die keinen Zyklus kreiert, bis du einen MST hast.
-
-\paragraph{Prim} Starte mit einem leeren Graph $V'$ und einem beliebigen Knoten $v$. Wähle die billigste Kante, die $v$ mit einem Knoten der noch nicht in $V'$ ist verbindet, bis du einen MST hast. 
-
-\subsection{Kürzeste Wege}
-
-\paragraph{Dijkstra} Fast identisch zu Prim. Wir haben $V'$ mit schon abgearbeiteten Knoten (zu diesen wissen wir die kürzeste Distanz), wir beginnen mit $v$. Wir gehen die Nachbarn durch, speichern die kürzere Distanz, entweder die von $v$ oder die, die bis jetzt die kürzeste war. Sobald alle Nachbarn besucht wurden, kommt $v$ in $V'$ und hat seine definitive kürzeste Distanz. \emph{Keine negativen Gewichte erlaubt!} (sonst rennt er im Kreis und heult) \\
-Je nach Priority-Queue-Implementation: $\Oh(|E|+|V|\log{|V|})$ oder gar $\Oh(|V|^2)$
-
-\paragraph{Bellman-Ford} Erster Knoten hat Kosten 0, alle anderen $\infty$. Wir gehen alle Kanten durch, und prüfen ob wir einem Knoten tiefere Kosten (Kosten Anfangsknoten + Kosten Kante) zuweisen können. Nach einer Iteration haben wir also die kürzesten Wege mit einer Kante, nach 2 mit 2 Kanten etc. Bellman-Ford ist Algorithmus genug, um auch negative Kantengewichte zu überstehen, kann sogar negative Zyklen erkennen. \\ Laufzeit: $\Oh(nm)$
+Algorthmen über Graphen: Kapitel \ref{graphalgos}, S. \pageref{graphalgos}
 
 \subsection{Flüsse}
-Min Cut = Max Flow
-
-\subsubsection{Ford-Fulkerson}
-Algorithmus zur Optimierung des Flusses.
-\begin{enumerate}
-\item Wähle irgendein Fluss von $q$ nach $s$.
-\item Bilde das Residualnetzwerk. ``Subtrahiere'' also die Kapazitäten die durch den ersten Fluss benutzt werden. 
-\item Wähle einen Fluss im Residualnetzwerk, und wiederhole Schritte 2 und 3 bis kein weiterer Fluss existiert.
-\end{enumerate}
-
-\subsubsection{Dinic} Bleh
+Im folgenden ist $G=(V,E)$ ein gerichteter Graph mit Kapazitätsfunktion $c: E\to\R$ und zwei ausgezeichneten Knoten, einer \emph{Quelle q} und einer \emph{Senke s}. Ein Fluss ist als eine Funktion $f: E\to\R^{+}_{0}$ definiert, wobei zwei Einschränkungen gelten:
+\begin{description}
+\item[Kapazitätsbeschränkung]
+Für alle $e\in E$ ist $f(e)\leq c(e)$
+\item[Flusserhaltung]
+Für alle $v\in V - \{q,s\}$ gilt \[ \sum_{v',v\in E}{f((v',v))}-\sum_{v,v''\in E}{f((v,v''))} = 0\]
+\end{description}
 
 \begin{center}
 \includegraphics[width=6cm]{FlowExample}
 
 Kapazität/Fluss
 \end{center}
+
+In diesem Beispiel fliesst ein Fluss von $q$ über $a,b,d$ zu $s$. Der \emph{Wert} $w(f)$ eines Flusses $f$ ist die Summe der Flusswerte aller $q$ verlassender Pfeile: $w(f) = \sum_{(q,v)\in E}{f((q,v))}-\sum_{(v',q)\in E}{f((v',q))}$. Oben also 3. Ein \emph{maximaler Fluss} in $G$ ist ein Fluss $f$ in $G$ mit maximalem Wert $f(f)$ unter allen Flüssen in $G$.
+\subsubsection{Schnitte}
+Ein \emph{Schnitt} ist eine Zerlegung von $V$ in zwei Teilmengen $Q,S$, so dass $q$ zu $Q$ und $s$ zu $S$ gehört. (Der Schnitt muss also $q$ und $s$ trennen). Die \emph{Kapazität} eines Schnittes ist die Summe der \emph{Kapazitäten} (egal wie viel fliesst) der Pfeile, welche von $Q$ nach $S$ führen (die Kapazitäten in die andere Richtung werden ignoniert.). Der Schnitt mit der kleinsten Kapazität heisst \emph{minimaler Schnitt}. Im Beispiel oben ist $Q = \{q,b\},\, S = \{a,c,d,s\}$ ein Schnitt mit Kapazität $11$. Es gilt: \emph{Min Cut = Max Flow}
+Algorithmen über Flüsse: Kapitel \ref{flowalgos}, S. \pageref{flowalgos}
 
 \section{Verschiedenes}
 
@@ -455,5 +480,13 @@ dann folgt daraus $\forall n\in\N: n \geq n_0 \rightarrow P(n)$.
 \paragraph{Induktionsverankerung (IV)} ist der Beweis von $P(n_0)$.
 
 \paragraph{Induktionsschritt (IS)} ist der Beweis von $P(n) \rightarrow P(n+1)$.
+
+\subsection{Bitonische Läufe}\label{bitonische_laufe}
+Bitonische Läufe, sind Folgen, die zuerst monoton steigen, dann monoton fallen (darum ``bi-tonisch'').
+ \[ a_i \leq a_{i+1} \leq \dots \leq a_{i+m} \geq a_{i+m+1} \geq \dots \geq a_{j+k} \]
+
+\subsection{Rekursionsgleichungen}
+Ein paar mal in sich selbst einfügen, Pattern erkennen und auflösen. Sehr oft sind Terme wie $\displaystyle c*\sum^{\log_b{(n)}-1}_{i=0}{x^i}$ die sich dann zu $\displaystyle\frac{x^{\log_b{n}}-1}{x-1}$ vereinfachen. 
+
 
 \end{document}
